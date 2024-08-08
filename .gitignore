@@ -1,3 +1,4 @@
 Curso/
 __pycache__/
 venv/
+.env
