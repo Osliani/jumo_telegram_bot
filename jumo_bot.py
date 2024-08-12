@@ -157,4 +157,4 @@ def reply_audio(message):
 
 if __name__ == "__main__":
     print("BOT LISTO!")
-    bot.infinity_polling(timeout=120)
+    bot.infinity_polling()
