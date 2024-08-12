@@ -50,11 +50,18 @@ def send_message(message, text, voice_msg_activated, voice):
         voice_msg_activated[message.chat.id] = False
         
     if voice_msg_activated[message.chat.id]:
-        voice_path = text_to_voice(text, voice[message.chat.id], message.chat.id)
-        audio = open(voice_path, 'rb')
-        bot.send_chat_action(message.chat.id, "upload_audio")
-        bot.send_voice(message.chat.id, audio, reply_markup=ReplyKeyboardRemove())
-        audio.close()
+        try:
+            voice_path = text_to_voice(text, voice[message.chat.id], message.chat.id)
+            audio = open(voice_path, 'rb')
+            bot.send_chat_action(message.chat.id, "upload_audio")
+            bot.send_voice(message.chat.id, audio, reply_markup=ReplyKeyboardRemove())
+            audio.close()
+        except Exception as e:
+            bot.send_chat_action(message.chat.id, "typing")
+            msg = "Lo siento, el envío del audio ha fallado. Le responderé esta vez con texto."
+            bot.send_message(message.chat.id, msg, reply_markup=ReplyKeyboardRemove())
+            bot.send_chat_action(message.chat.id, "typing")
+            bot.send_message(message.chat.id, text)
     else:
         bot.send_chat_action(message.chat.id, "typing")
         bot.send_message(message.chat.id, text, reply_markup=ReplyKeyboardRemove())
