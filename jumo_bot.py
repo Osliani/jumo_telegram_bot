@@ -6,8 +6,7 @@ import telebot, assistant, os, utils
 
 load_dotenv()
 client = OpenAI(api_key = os.getenv("OPENAI_API_KEY"))
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-bot = telebot.TeleBot(TELEGRAM_TOKEN)
+bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
 voice_msg_activated = {}
 voice = {}
 
@@ -60,6 +59,8 @@ def settings_menu(message):
             reply_markup=markup,
         )
         bot.register_next_step_handler(msg, settings_voices)
+    elif message.text == "Salir":
+        utils.send_message(message, "Menú Cerrado", voice_msg_activated, voice)
 
 
 def settings_formats(message):
