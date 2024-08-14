@@ -1,5 +1,10 @@
-from pathlib import Path
 from openai import OpenAI
+from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 client = OpenAI(api_key = os.getenv("OPENAI_API_KEY"))
 
 speech_file_path = Path(__file__).parent / "voice_examples/shimmer.mp3"

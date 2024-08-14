@@ -1,6 +1,7 @@
 from telebot.types import ReplyKeyboardRemove
 from dotenv import load_dotenv
 from openai import OpenAI
+from moviepy.editor import AudioFileClip
 import os, telebot
 
 load_dotenv()
@@ -28,6 +29,7 @@ def voice_to_text(message):
         audio_file.write(downloaded_file)
         print("Audio recibido y guardado.")
         
+    with open("voice_in.mp3", 'rb') as audio_file:
         #transcripcion
         transcription = client.audio.transcriptions.create(
             model="whisper-1", 
@@ -52,11 +54,11 @@ def send_message(message, text, voice_msg_activated, voice):
     if voice_msg_activated[message.chat.id]:
         try:
             voice_path = text_to_voice(text, voice[message.chat.id], message.chat.id)
-            audio = open(voice_path, 'rb')
-            bot.send_chat_action(message.chat.id, "upload_audio")
-            bot.send_voice(message.chat.id, audio, reply_markup=ReplyKeyboardRemove())
-            audio.close()
+            with open(voice_path, 'rb') as audio:
+                bot.send_chat_action(message.chat.id, "upload_audio")
+                bot.send_voice(message.chat.id, audio, reply_markup=ReplyKeyboardRemove(), timeout=60)
         except Exception as e:
+            print(e)
             bot.send_chat_action(message.chat.id, "typing")
             msg = "Lo siento, el envío del audio ha fallado. Le responderé esta vez con texto."
             bot.send_message(message.chat.id, msg, reply_markup=ReplyKeyboardRemove())
@@ -65,3 +67,23 @@ def send_message(message, text, voice_msg_activated, voice):
     else:
         bot.send_chat_action(message.chat.id, "typing")
         bot.send_message(message.chat.id, text, reply_markup=ReplyKeyboardRemove())
+        
+
+def split_audio(file_path, segment_duration=60):
+    audio = AudioFileClip(file_path)
+    total_duration = int(audio.duration)
+    
+    for i in range(0, total_duration, segment_duration):
+        start_time = i
+        end_time = min(i + segment_duration, total_duration)
+        
+        segment = audio.subclip(start_time, end_time)
+        segment_file_name = os.path.join(f"segment_{(i // segment_duration) + 1}.mp3")
+        
+        segment.write_audiofile(segment_file_name)
+        
+        print(f"Segmento guardado: {segment_file_name} ({start_time} - {end_time} segundos)")
+
+    print("División completada.")
+    
+    return (total_duration // segment_duration) + 1
