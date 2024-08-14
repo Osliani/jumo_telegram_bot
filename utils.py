@@ -1,7 +1,6 @@
 from telebot.types import ReplyKeyboardRemove
 from dotenv import load_dotenv
 from openai import OpenAI
-from moviepy.editor import AudioFileClip
 import os, telebot
 
 load_dotenv()
@@ -68,22 +67,3 @@ def send_message(message, text, voice_msg_activated, voice):
         bot.send_chat_action(message.chat.id, "typing")
         bot.send_message(message.chat.id, text, reply_markup=ReplyKeyboardRemove())
         
-
-def split_audio(file_path, segment_duration=60):
-    audio = AudioFileClip(file_path)
-    total_duration = int(audio.duration)
-    
-    for i in range(0, total_duration, segment_duration):
-        start_time = i
-        end_time = min(i + segment_duration, total_duration)
-        
-        segment = audio.subclip(start_time, end_time)
-        segment_file_name = os.path.join(f"segment_{(i // segment_duration) + 1}.mp3")
-        
-        segment.write_audiofile(segment_file_name)
-        
-        print(f"Segmento guardado: {segment_file_name} ({start_time} - {end_time} segundos)")
-
-    print("División completada.")
-    
-    return (total_duration // segment_duration) + 1
