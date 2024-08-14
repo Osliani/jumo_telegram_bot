@@ -9,6 +9,7 @@ client = OpenAI(api_key = os.getenv("OPENAI_API_KEY"))
 bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
 voice_msg_activated = {}
 voice = {}
+bot.webhook = 'https://telegram-jumo-bot.onrender.com:8443'
 
 
 @bot.message_handler(commands=["settings"])
