@@ -1,6 +1,5 @@
 from openai import OpenAI
-from telebot.types import ReplyKeyboardMarkup, ForceReply, ReplyKeyboardRemove
-from pathlib import Path
+from telebot.types import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from dotenv import load_dotenv
 import telebot, assistant, os, utils
 
