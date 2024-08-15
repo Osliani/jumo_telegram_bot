@@ -13,7 +13,7 @@ bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
 web_server = Flask(__name__)
 voice_msg_activated = {}
 voice = {}
-NRGROK_TOKEN = os.getenv('NRGROK_TOKEN')
+NGROK_TOKEN = os.getenv('NGROK_TOKEN')
 
 @web_server.route('/', methods=['POST'])
 def webhook():
@@ -171,7 +171,7 @@ if __name__ == "__main__":
     print("Iniciando Bot")
     conf.get_default().config_path = "./config_ngrok.yml"
     conf.get_default().region = "eu"
-    ngrok.set_auth_token(NRGROK_TOKEN)
+    ngrok.set_auth_token(NGROK_TOKEN)
     ngrok_tunel = ngrok.connect(5000, bind_tls = True)
     ngrok_url = ngrok_tunel.public_url
     print(ngrok_url)
