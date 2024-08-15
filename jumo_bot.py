@@ -13,7 +13,7 @@ bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
 web_server = Flask(__name__)
 voice_msg_activated = {}
 voice = {}
-NGROK_TOKEN = os.getenv('NGROK_TOKEN')
+#NGROK_TOKEN = os.getenv('NGROK_TOKEN')
 
 @web_server.route('/', methods=['POST'])
 def webhook():
@@ -169,14 +169,14 @@ def reply_audio(message):
 
 if __name__ == "__main__":
     print("Iniciando Bot")
-    conf.get_default().config_path = "./config_ngrok.yml"
+    """ conf.get_default().config_path = "./config_ngrok.yml"
     conf.get_default().region = "eu"
     ngrok.set_auth_token(NGROK_TOKEN)
     ngrok_tunel = ngrok.connect(5000, bind_tls = True)
     ngrok_url = ngrok_tunel.public_url
     print(ngrok_url)
     bot.remove_webhook()
-    time.sleep(1)
-    bot.set_webhook(url = ngrok_url)
+    time.sleep(1) """
+    bot.set_webhook(url = "https://telegram-jumo-bot.onrender.com")
     #web_server.run(host="0.0.0.0", port=5000)
     serve(web_server, host="0.0.0.0", port=5000)
