@@ -177,6 +177,6 @@ if __name__ == "__main__":
     print(ngrok_url)
     bot.remove_webhook()
     time.sleep(1) """
-    bot.set_webhook(url = "http://51.210.112.67:3030")
+    bot.set_webhook(url = "http://51.210.112.67:3035")
     #web_server.run(host="0.0.0.0", port=5000)
-    serve(web_server, host="0.0.0.0", port=3030)
+    serve(web_server, host="0.0.0.0", port=3035)
