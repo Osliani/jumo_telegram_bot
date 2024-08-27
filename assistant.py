@@ -9,7 +9,7 @@ bot = telebot.TeleBot(TELEGRAM_TOKEN)
 
 def send_message(data):
     #url = "http://127.0.0.1:3028/chat"
-    url = "https://jumo-webchat.onrender.com/chat"
+    url = "http://127.0.0.1:3028/chat"
     #url = "http://51.210.112.67:3028/chat"
     
     headers = {
